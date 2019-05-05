@@ -11,4 +11,7 @@ module.exports = app => {
   router.post('/articleWrite', controller.article.articleWrite);
   router.get ('/articleDelete', controller.article.articleDelete);
   router.post('/articleUpdate', controller.article.articleUpdate);
+
+  router.post('/login', controller.user.login);
+  router.post('/register', controller.user.register);
 };

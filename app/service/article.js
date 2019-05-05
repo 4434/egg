@@ -1,10 +1,17 @@
 const Service = require('egg').Service;
 
 class UserService extends Service {
-  async select() {
-    const row = await this.app.mysql.query('select `id`,`title`,`create_time`,`length`,`describe` from nvmjs_article');
+  
+  async select(params) {
+    const row = await this.app.mysql.query('select `id`,`title`,`create_time`,`length`,`describe` from nvmjs_article where title like "%'+params.search+'%" limit ' + (params.pageIndex - 1) * params.pageSize +','+ params.pageSize);
     return row;
   }
+
+  async listNum (params) {
+    const num = await this.app.mysql.query('select count(1) as `count` from nvmjs_article where title like "%'+ params.search +'%"');
+    return num[0] ? num[0].count : 0 ;
+  }
+
   async find(id) {
     const row = await this.app.mysql.query('select * from nvmjs_article where id = ' + id);
     return row;

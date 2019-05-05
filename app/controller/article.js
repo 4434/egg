@@ -7,11 +7,21 @@ class ArticleController extends Controller {
 
   async articleList() {
     const { ctx } = this;
-    const article = await ctx.service.article.select();
+    const params = ctx.request.body || {};
+    params.pageIndex = params.pageIndex || 1;
+    params.pageSize  = params.pageSize || 10;
+    params.search    = params.search || '';    
+    const article = await ctx.service.article.select(params);
+    const listNum = await ctx.service.article.listNum(params);
     ctx.body = {
     	code: 200,
     	message: '获取文章列表成功',
-    	data: article
+    	data: article,
+      page: {
+        pageIndex: params.pageIndex,
+        pageSize: params.pageSize,
+        pageAll: listNum
+      }
     };
   }
 
