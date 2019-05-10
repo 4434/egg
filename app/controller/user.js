@@ -13,7 +13,9 @@ class UserController extends Controller {
 		ctx.body = {
 			code: 200,
 			message: '登录成功',
-			data: data[0]
+			data: {
+				token: data[0].uid
+			}
 		}
 	}else{
 		ctx.body = {
@@ -27,15 +29,16 @@ class UserController extends Controller {
   async register () {
     const { ctx } = this;    
     const params  = ctx.request.body;
-    console.log(ctx.cookies.get('count'));
-    const user = await ctx.service.user.find(params.username);
+    const user = await ctx.service.user.find(params.username);  
     if(user.length == 0){
     	params.create_time = yktool.time().getTime;
 	    const data = await ctx.service.user.write(params);
 	    ctx.body = {
 	    	code: 200,
 	    	message: '注册成功',
-	    	data: data
+	    	data: {
+	    		token: 'N' + params.create_time
+	    	}
 	    };
     }else{
     	ctx.body = {
