@@ -1,5 +1,4 @@
 'use strict';
-
 const Controller = require('egg').Controller;
 const yktool     = require('./../public/js/yktool.js');
 

@@ -25,6 +25,25 @@ class ArticleController extends Controller {
     };
   }
 
+  async articleUs () {
+    const { ctx } = this;
+    const params = ctx.request.body || {};
+    params.pageIndex = params.pageIndex || 1;
+    params.pageSize  = params.pageSize || 10;
+    params.uid    = params.uid || '';
+    const data = await ctx.service.article.articleUs(params);
+    ctx.body = {
+      code: 200,
+      message: '获取文章列表成功',
+      data: data.row,
+      page: {
+        pageIndex: params.pageIndex,
+        pageSize: params.pageSize,
+        pageAll: data.num
+      }
+    }
+  }
+
   async articleDetail () {
   	const { ctx } = this;
   	const id = ctx.query.id;
@@ -39,6 +58,14 @@ class ArticleController extends Controller {
   async articleWrite () {
   	const { ctx } = this;
   	const params = ctx.request.body;
+    if(!params.token){
+      ctx.body = {
+        code: 401,
+        message: '请先登陆',
+        data: null
+      };      
+      return;
+    }
     params.describe = yktool.clearHTML(params.text).substr(0, 70);
     params.length = yktool.clearHTML(params.text).length;
     params.create_time = yktool.time().getTime;

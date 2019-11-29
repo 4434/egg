@@ -2,23 +2,31 @@ const Service = require('egg').Service;
 
 class UserService extends Service {
   
-  async select(params) {
-    const row = await this.app.mysql.query('select `id`,`title`,`create_time`,`length`,`describe` from nvmjs_article where title like "%'+params.search+'%" limit ' + (params.pageIndex - 1) * params.pageSize +','+ params.pageSize);
+  async select(params) {    // 文章列表查询 - 分页 - 模糊搜索
+    const row = await this.app.mysql.query('select nvmjs_article.id,nvmjs_article.uid,nvmjs_user.username,`title`,nvmjs_article.create_time,`length`,`describe` from nvmjs_article left join nvmjs_user on nvmjs_article.uid = nvmjs_user.uid where title like "%'+params.search+'%" limit ' + (params.pageIndex - 1) * params.pageSize +','+ params.pageSize);
     return row;
   }
 
-  async listNum (params) {
+  async listNum (params) {   // 文章数量
     const num = await this.app.mysql.query('select count(1) as `count` from nvmjs_article where title like "%'+ params.search +'%"');
     return num[0] ? num[0].count : 0 ;
   }
 
+  async articleUs (params) {  // 根据用户查文章列表
+    let data = {};
+    data.row = await this.app.mysql.query('select * from nvmjs_article where uid = "'  + params.uid + '" limit ' + (params.pageIndex - 1) * params.pageSize +','+ params.pageSize);
+    data.num = await this.app.mysql.query('select count(1) as `count` from nvmjs_article where uid = "'  + params.uid + '"');
+    data.num = data.num[0] ? data.num[0].count : 0 ;
+    return data;
+  }
+
   async find(id) {
-    const row = await this.app.mysql.query('select * from nvmjs_article where id = ' + id);
+    const row = await this.app.mysql.query('select nvmjs_article.id,nvmjs_article.uid,nvmjs_user.username,`title`,nvmjs_article.create_time,`length`,`describe`,`text` from nvmjs_article left join nvmjs_user on nvmjs_article.uid = nvmjs_user.uid where nvmjs_article.id = ' + id);
     return row;
   }
 
   async write (params) {
-  	const row = await this.app.mysql.query('insert into nvmjs_article (`text`, `describe`, `title`, `length`, `type`, `create_time`) value("'+params.text+'","'+ params.describe +'","'+ params.title +'","'+ params.length +'","'+ params.type +'","'+ params.create_time +'")');
+  	const row = await this.app.mysql.query('insert into nvmjs_article (`text`, `describe`, `title`, `length`, `type`, `create_time`, `uid`) value("'+params.text+'","'+ params.describe +'","'+ params.title +'","'+ params.length +'","'+ params.type +'","'+ params.create_time +'","'+ params.token +'")');
     return row;
   }
 

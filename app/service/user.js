@@ -6,7 +6,7 @@ class UserService extends Service {
     const row = await this.app.mysql.query('select * from nvmjs_user where username = "'+ username +'"');
     return row;
   }
-
+  
   async login(params) {
     const row = await this.app.mysql.query('select * from nvmjs_user where username = "' + params.username + '" ' +'and password = "' + params.password + '"');
     return row;

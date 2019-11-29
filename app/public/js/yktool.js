@@ -14,9 +14,11 @@ let yktool = {
 		timeData.day     = t.getDate() < 10 ? '0' + t.getDate() : t.getDate();
 		timeData.week    = t.getDay() < 10 ? '0' + t.getDay() : t.getDay();
 		timeData.hour    = t.getHours() < 10 ? '0' + t.getHours() : t.getHours();
-		timeData.minute  = t.getMinutes() < 10 ? "0" + t.getMinutes() : t.getMinutes();
-		timeData.second  = t.getSeconds() < 10 ? "0" + t.getSeconds() : t.getSeconds();
+		timeData.minute  = t.getMinutes() < 10 ? '0' + t.getMinutes() : t.getMinutes();
+		timeData.second  = t.getSeconds() < 10 ? '0' + t.getSeconds() : t.getSeconds();
 		return 	timeData;			
-	}	
+	},
+	
+
 }
 module.exports = yktool;

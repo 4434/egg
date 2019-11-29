@@ -9,6 +9,7 @@ module.exports = app => {
   router.post('/article', controller.article.articleList);
   router.get ('/articleDetail', controller.article.articleDetail);
   router.post('/articleWrite', controller.article.articleWrite);
+  router.post('/articleUs', controller.article.articleUs);
   router.get ('/articleDelete', controller.article.articleDelete);
   router.post('/articleUpdate', controller.article.articleUpdate);
 
