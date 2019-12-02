@@ -3,7 +3,7 @@ const Service = require('egg').Service;
 class UserService extends Service {
   
   async select(params) {    // 文章列表查询 - 分页 - 模糊搜索
-    const row = await this.app.mysql.query('select nvmjs_article.id,nvmjs_article.uid,nvmjs_user.username,`title`,nvmjs_article.create_time,`length`,`describe` from nvmjs_article left join nvmjs_user on nvmjs_article.uid = nvmjs_user.uid where title like "%'+params.search+'%" limit ' + (params.pageIndex - 1) * params.pageSize +','+ params.pageSize);
+    const row = await this.app.mysql.query('select nvmjs_article.id,nvmjs_user.username,`title`,nvmjs_article.create_time,`length`,`describe` from nvmjs_article left join nvmjs_user on nvmjs_article.uid = nvmjs_user.uid where title like "%'+params.search+'%" limit ' + (params.pageIndex - 1) * params.pageSize +','+ params.pageSize);
     return row;
   }
 
@@ -21,12 +21,12 @@ class UserService extends Service {
   }
 
   async find(id) {
-    const row = await this.app.mysql.query('select nvmjs_article.id,nvmjs_article.uid,nvmjs_user.username,`title`,nvmjs_article.create_time,`length`,`describe`,`text` from nvmjs_article left join nvmjs_user on nvmjs_article.uid = nvmjs_user.uid where nvmjs_article.id = ' + id);
+    const row = await this.app.mysql.query('select nvmjs_article.id,nvmjs_user.username,`title`,nvmjs_article.create_time,`length`,`describe`,`text` from nvmjs_article left join nvmjs_user on nvmjs_article.uid = nvmjs_user.uid where nvmjs_article.id = ' + id);
     return row;
   }
 
   async write (params) {
-  	const row = await this.app.mysql.query('insert into nvmjs_article (`text`, `describe`, `title`, `length`, `type`, `create_time`, `uid`) value("'+params.text+'","'+ params.describe +'","'+ params.title +'","'+ params.length +'","'+ params.type +'","'+ params.create_time +'","'+ params.token +'")');
+  	const row = await this.app.mysql.query("insert into nvmjs_article (`text`, `describe`, `title`, `length`, `type`, `create_time`, `uid`) value('"+params.text+"','"+ params.describe +"','"+ params.title +"','"+ params.length +"','"+ params.type +"','"+ params.create_time +"','"+ params.token +"')");
     return row;
   }
 
