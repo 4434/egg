@@ -18,6 +18,11 @@ module.exports = appInfo => {
     // myAppName: 'egg',
   };
 
+  config.bodyParser = {
+    jsonLimit: '100mb',
+    formLimit: '100mb'
+  }
+
   config.security = {
     csrf: {
       enable: false,
