@@ -11,18 +11,17 @@ class ArticleController extends Controller {
     params.pageIndex = params.pageIndex || 1;
     params.pageSize  = params.pageSize || 10;
     params.search    = params.search || '';    
-    const article = await ctx.service.article.select(params);
-    const listNum = await ctx.service.article.listNum(params);
+    const data = await ctx.service.article.select(params);
     ctx.body = {
-    	code: 200,
-    	message: '获取文章列表成功',
-    	data: article,
+      code: 200,
+      message: '获取文章列表成功',
+      data: data.row,
       page: {
         pageIndex: params.pageIndex,
         pageSize: params.pageSize,
-        pageAll: listNum
+        pageAll: data.num
       }
-    };
+    }
   }
 
   async articleUs () {
@@ -30,8 +29,14 @@ class ArticleController extends Controller {
     const params = ctx.request.body || {};
     params.pageIndex = params.pageIndex || 1;
     params.pageSize  = params.pageSize || 10;
+    params.search    = params.search || '';
     params.uid    = params.uid || '';
-    const data = await ctx.service.article.articleUs(params);
+    let data;
+    if(params.uid === 'admin0001'){
+      data = await ctx.service.article.select(params);
+    }else{
+      data = await ctx.service.article.articleUs(params);  
+    }
     ctx.body = {
       code: 200,
       message: '获取文章列表成功',
