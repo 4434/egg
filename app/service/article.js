@@ -34,7 +34,7 @@ class UserService extends Service {
   }
 
   async update (params) {
-    const row = await this.app.mysql.query('update nvmjs_article set `text` = "'+ params.text +'", `describe` = "'+ params.describe +'", `title` = "'+ params.title +'", `length` = "'+ params.length +'", `type` = "' + params.type + '", `create_time` = "' + params.create_time + '" where id= ' + params.id);    
+    const row = await this.app.mysql.query("update nvmjs_article set `text` = '"+ params.text +"', `describe` = '"+ params.describe +"', `title` = '"+ params.title +"', `length` = '"+ params.length +"', `type` = '" + params.type + "', `create_time` = '" + params.create_time + "' where id= " + params.id);    
     return row;
   }  
 
