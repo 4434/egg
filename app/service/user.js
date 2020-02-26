@@ -16,6 +16,11 @@ class UserService extends Service {
   	const row = await this.app.mysql.query('insert into nvmjs_user (`username`, `password`, `create_time`, `uid`) value("'+params.username+'","'+ params.password +'","'+ params.create_time + '","N' + params.create_time + '")');
     return row;
   }
+
+  async update (params) {
+    const row = await this.app.mysql.query("update nvmjs_user set `avater` = '"+ params.avater +"', `d` = '"+ params.desc +"', `sex` = '"+ params.sex + "' where uid = '" + params.uid + "'");    
+    return row;
+  }    
 }
 
 module.exports = UserService;

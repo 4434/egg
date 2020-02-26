@@ -13,7 +13,8 @@ class UserController extends Controller {
 			code: 200,
 			message: '登录成功',
 			data: {
-				token: data[0].uid
+				token: data[0].uid,
+				avater: data[0].avater
 			}
 		}
 	}else{
@@ -48,6 +49,21 @@ class UserController extends Controller {
     }
 
   }
+
+  async userInfo () {
+    const { ctx } = this;
+    const params = ctx.request.body || {};
+    params.uid    = params.uid || '';
+    params.avater    = params.avater || '';
+    params.sex    = params.sex || 0;
+    params.desc    = params.desc || '';
+    const data = await ctx.service.user.update(params);
+    ctx.body = {
+      code: 200,
+      message: '修改成功',
+      data: data,
+    }
+  }  
 }
 
 module.exports = UserController;
