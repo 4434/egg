@@ -6,6 +6,11 @@ class UserService extends Service {
     const row = await this.app.mysql.query('select * from nvmjs_user where username = "'+ username +'"');
     return row;
   }
+
+  async getUse(uid) {
+    const row = await this.app.mysql.query('select `username`, `sex`, `d`, `create_time`, `avater` from nvmjs_user where uid = "'+ uid +'"');
+    return row;
+  }
   
   async login(params) {
     const row = await this.app.mysql.query('select * from nvmjs_user where username = "' + params.username + '" ' +'and password = "' + params.password + '"');
@@ -18,7 +23,7 @@ class UserService extends Service {
   }
 
   async update (params) {
-    const row = await this.app.mysql.query("update nvmjs_user set `avater` = '"+ params.avater +"', `d` = '"+ params.desc +"', `sex` = '"+ params.sex + "' where uid = '" + params.uid + "'");    
+    const row = await this.app.mysql.query("update nvmjs_user set `avater` = '"+ params.avater +"', `d` = '"+ params.d +"', `sex` = '"+ params.sex + "' where uid = '" + params.uid + "'");    
     return row;
   }    
 }

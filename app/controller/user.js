@@ -50,18 +50,37 @@ class UserController extends Controller {
 
   }
 
+  async getUse () {
+    const { ctx } = this;
+    const uid = ctx.query.uid || '';
+    const row = await ctx.service.user.getUse(uid);
+    if(row.length){
+	    ctx.body = {
+	    	code: 200,
+	    	message: '获取成功',
+	    	data: row[0]
+	    };    		
+    }else{
+	    ctx.body = {
+	    	code: 200,
+	    	message: '获取失败',
+	    }; 
+    }
+  } 
+
   async userInfo () {
     const { ctx } = this;
     const params = ctx.request.body || {};
     params.uid    = params.uid || '';
     params.avater    = params.avater || '';
     params.sex    = params.sex || 0;
-    params.desc    = params.desc || '';
+    params.d    = params.d|| '';
     const data = await ctx.service.user.update(params);
+    const row  = await ctx.service.user.getUse(params.uid);
     ctx.body = {
       code: 200,
       message: '修改成功',
-      data: data,
+      data: row[0],
     }
   }  
 }

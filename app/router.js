@@ -16,7 +16,7 @@ module.exports = app => {
   router.post('/login', controller.user.login);
   router.post('/register', controller.user.register);
   router.post('/userInfo', controller.user.userInfo);
-
+  router.get('/getUse', controller.user.getUse);
   router.get ('/getQiniuToken', controller.qiniu.getToken);
 
 };
