@@ -19,7 +19,7 @@ class UserService extends Service {
   }
 
   async find(id) {
-    const row = await this.app.mysql.query('select nvmjs_article.id,nvmjs_user.username,nvmjs_user.avater,`title`,nvmjs_article.create_time,`length`,`describe`,`text` from nvmjs_article left join nvmjs_user on nvmjs_article.uid = nvmjs_user.uid where nvmjs_article.id = ' + id);
+    const row = await this.app.mysql.query('select nvmjs_article.id,nvmjs_user.username,nvmjs_user.avater,`title`,nvmjs_article.create_time,nvmjs_article.type,`length`,`describe`,`text` from nvmjs_article left join nvmjs_user on nvmjs_article.uid = nvmjs_user.uid where nvmjs_article.id = ' + id);
     return row;
   }
 
