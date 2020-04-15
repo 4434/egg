@@ -48,6 +48,7 @@ module.exports = appInfo => {
       password: 'root',
       // 数据库名
       database: 'nvmjs',
+      charset: 'UTF8_GENERAL_CI' 
     },
     // 是否加载到 app 上，默认开启
     app: true,
