@@ -12,7 +12,7 @@ class UserService extends Service {
 
   async articleUs (params) {  // 根据用户查文章列表
     let data = {};
-    data.row = await this.app.mysql.query('select * from nvmjs_article where uid = "'  + params.uid + '" limit ' + (params.pageIndex - 1) * params.pageSize +','+ params.pageSize);
+    data.row = await this.app.mysql.query('select * from nvmjs_article where uid = "'  + params.uid + '" desc limit ' + (params.pageIndex - 1) * params.pageSize +','+ params.pageSize);
     data.num = await this.app.mysql.query('select count(1) as `count` from nvmjs_article where uid = "'  + params.uid + '"');
     data.num = data.num[0] ? data.num[0].count : 0 ;
     return data;
