@@ -19,4 +19,8 @@ module.exports = app => {
   router.get('/getUse', controller.user.getUse);
   router.get ('/getQiniuToken', controller.qiniu.getToken);
 
+  router.post('/addData', controller.echart.addData);
+  router.post('/listData', controller.echart.listData);
+  router.get('/dataDelete', controller.echart.dataDelete);
+  router.post('/dataUpdate', controller.echart.dataUpdate);
 };
