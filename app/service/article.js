@@ -1,6 +1,6 @@
 const Service = require('egg').Service;
 
-class UserService extends Service {
+class ArticleService extends Service {
   
   async select(params) {    // 文章列表查询 - 分页 - 模糊搜索
     let data = {};
@@ -40,4 +40,4 @@ class UserService extends Service {
 
 }
 
-module.exports = UserService;
+module.exports = ArticleService;
