@@ -21,7 +21,7 @@ class EchartService extends Service {
   }
 
   async update (params) {
-    const row = await this.app.mysql.query("update nvmjs_data set `num` = '"+ params.num +"' where id= " + params.id);    
+    const row = await this.app.mysql.query("update nvmjs_data set `num` = '"+ params.num +"', `time` = '"+ params.time +"' where id= " + params.id);    
     return row;
   }  
 
