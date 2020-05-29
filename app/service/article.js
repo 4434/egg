@@ -24,7 +24,15 @@ class ArticleService extends Service {
   }
 
   async write (params) {
-  	const row = await this.app.mysql.query("insert into nvmjs_article (`text`, `describe`, `title`, `length`, `type`, `create_time`, `uid`) value('"+params.text+"','"+ params.describe +"','"+ params.title +"','"+ params.length +"','"+ params.type +"','"+ params.create_time +"','"+ params.token +"')");
+    const row = await this.app.mysql.insert('nvmjs_article',{
+      text: params.text,
+      describe: params.describe,
+      title: params.title,
+      length: params.length,
+      type: params.type,
+      create_time: params.create_time,
+      uid: params.token
+    })
     return row;
   }
 
@@ -34,10 +42,19 @@ class ArticleService extends Service {
   }
 
   async update (params) {
-    const row = await this.app.mysql.query("update nvmjs_article set `text` = '"+ params.text +"', `describe` = '"+ params.describe +"', `title` = '"+ params.title +"', `length` = '"+ params.length +"', `type` = '" + params.type + "', `create_time` = '" + params.create_time + "' where id= " + params.id);    
+    const content = {
+      id: params.id,
+      text: params.text,
+      describe: params.describe,
+      title: params.title,
+      length: params.length,
+      type: params.type,
+      create_time: params.create_time
+    }
+    const row = await this.app.mysql.update('nvmjs_article', content);  
     return row;
-  }  
-
+  }
+  
 }
 
 module.exports = ArticleService;
