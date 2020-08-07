@@ -7,7 +7,7 @@ class EchartService extends Service {
     data.row = await this.app.mysql.query('select * from nvmjs_data where uid = "'  + params.token + '" order by time');
     data.num = await this.app.mysql.query('select count(1) as `count` from nvmjs_article where uid = "'  + params.token + '"');
     data.num = data.num[0] ? data.num[0].count : 0 ;
-    return data;
+    return data;    
   }
 
   async write (params) {    
@@ -21,8 +21,14 @@ class EchartService extends Service {
   }
 
   async update (params) {
-    const row = await this.app.mysql.query("update nvmjs_data set `num` = '"+ params.num +"', `time` = '"+ params.time +"' where id= " + params.id);    
-    return row;
+    const content = {
+      id: params.id,
+      num: params.num,
+      time: params.time,
+      flag: params.flag,
+    }
+    const row = await this.app.mysql.update('nvmjs_data', content);  
+    return row;    
   }  
 
 }
