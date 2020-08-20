@@ -18,8 +18,15 @@ class UserService extends Service {
   }
 
   async write (params) {
-  	const row = await this.app.mysql.query('insert into nvmjs_user (`username`, `password`, `create_time`, `uid`) value("'+params.username+'","'+ params.password +'","'+ params.create_time + '","N' + params.create_time + '")');
-    return row;
+    const row = await this.app.mysql.insert('nvmjs_user', {
+      username: params.username,
+      password: params.password,
+      create_time: params.create_time,
+      uid: 'N' + params.create_time,
+      sex: params.sex
+    });
+    return row;  
+
   }
 
   async update (params) {

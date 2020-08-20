@@ -31,8 +31,9 @@ class UserController extends Controller {
     const params  = ctx.request.body;
     const user = await ctx.service.user.find(params.username);  
     if(user.length == 0){
-    	params.create_time = yktool.time().getTime;
-	    const data = await ctx.service.user.write(params);
+		params.create_time = yktool.time().getTime;
+		params.sex         = params.sex || 1;
+	   await ctx.service.user.write(params);
 	    ctx.body = {
 	    	code: 200,
 	    	message: '注册成功',
