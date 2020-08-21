@@ -46,6 +46,7 @@ class ArticleService extends Service {
     const content = {
       id: params.id,
       text: params.text,
+      markdown: params.markdown,
       describe: params.describe,
       title: params.title,
       length: params.length,
