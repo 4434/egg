@@ -4,7 +4,7 @@ class ArticleService extends Service {
   
   async select(params) {    // 文章列表查询 - 分页 - 模糊搜索
     let data = {};
-    data.row = await this.app.mysql.query('select nvmjs_article.id,nvmjs_user.username,`title`,nvmjs_article.create_time,`length`,`describe` from nvmjs_article left join nvmjs_user on nvmjs_article.uid = nvmjs_user.uid where title like "%'+params.search+'%" order by nvmjs_article.create_time desc limit ' + (params.pageIndex - 1) * params.pageSize +','+ params.pageSize);
+    data.row = await this.app.mysql.query('select nvmjs_article.id,nvmjs_user.username,`title`,nvmjs_article.create_time,`length`,`describe`, `text` from nvmjs_article left join nvmjs_user on nvmjs_article.uid = nvmjs_user.uid where title like "%'+params.search+'%" order by nvmjs_article.create_time desc limit ' + (params.pageIndex - 1) * params.pageSize +','+ params.pageSize);
     data.num = await this.app.mysql.query('select count(1) as `count` from nvmjs_article where title like "%'+ params.search +'%"');
     data.num = data.num[0] ? data.num[0].count : 0 ;
     return data;
