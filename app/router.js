@@ -12,6 +12,7 @@ module.exports = app => {
   router.post('/articleUs', controller.article.articleUs);
   router.get ('/articleDelete', controller.article.articleDelete);
   router.post('/articleUpdate', controller.article.articleUpdate);
+  router.post('/articleStatus', controller.article.articleStatus);
 
   router.post('/login', controller.user.login);
   router.post('/register', controller.user.register);

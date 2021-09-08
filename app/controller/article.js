@@ -11,7 +11,12 @@ class ArticleController extends Controller {
     params.pageIndex = params.pageIndex || 1;
     params.pageSize  = params.pageSize || 10;
     params.search    = params.search || '';    
-    const data = await ctx.service.article.select(params);
+    let data;
+    if(ctx.request.header.token === 'admin0001'){
+      data = await ctx.service.article.selectAll(params);
+    }else{
+      data = await ctx.service.article.select(params);  
+    }
     ctx.body = {
       code: 200,
       message: '获取文章列表成功',
@@ -33,7 +38,7 @@ class ArticleController extends Controller {
     params.uid    = params.uid || '';
     let data;
     if(params.uid === 'admin0001'){
-      data = await ctx.service.article.select(params);
+      data = await ctx.service.article.selectAll(params);
     }else{
       data = await ctx.service.article.articleUs(params);  
     }
@@ -48,6 +53,19 @@ class ArticleController extends Controller {
       }
     }
   }
+  /**
+   *  修改文章显示状态
+   */
+  async articleStatus () {
+    const { ctx } = this;
+    const params = ctx.request.body || {};
+    const data = await ctx.service.article.status(params);
+    ctx.body = {
+      code: 200,
+      message: '修改状态成功',
+      data: data
+    }
+  }  
 
   async articleDetail () {
   	const { ctx } = this;
@@ -74,6 +92,7 @@ class ArticleController extends Controller {
     params.describe = yktool.clearHTML(params.text).substr(0, 70);
     params.length = yktool.clearHTML(params.text).length;
     params.create_time = yktool.time().getTime;
+    params.show = params.show || 1;
     const data = await ctx.service.article.write(params);
   	ctx.body = {
     	code: 200,

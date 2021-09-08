@@ -4,8 +4,16 @@ class ArticleService extends Service {
   
   async select(params) {    // 文章列表查询 - 分页 - 模糊搜索
     let data = {};
-    data.row = await this.app.mysql.query('select nvmjs_article.id,nvmjs_user.username,`title`,nvmjs_article.create_time,`length`,`describe` from nvmjs_article left join nvmjs_user on nvmjs_article.uid = nvmjs_user.uid where title like "%'+params.search+'%" order by nvmjs_article.create_time desc limit ' + (params.pageIndex - 1) * params.pageSize +','+ params.pageSize);
-    data.num = await this.app.mysql.query('select count(1) as `count` from nvmjs_article where title like "%'+ params.search +'%"');
+    data.row = await this.app.mysql.query('select nvmjs_article.id,nvmjs_user.username,`title`,nvmjs_article.create_time,`length`,`describe` from nvmjs_article left join nvmjs_user on nvmjs_article.uid = nvmjs_user.uid where nvmjs_article.show = 1 and title like "%'+params.search+'%" order by nvmjs_article.create_time desc limit ' + (params.pageIndex - 1) * params.pageSize +','+ params.pageSize);
+    data.num = await this.app.mysql.query('select count(1) as `count` from nvmjs_article where nvmjs_article.show = 1 and title like "%'+ params.search +'%"');
+    data.num = data.num[0] ? data.num[0].count : 0 ;
+    return data;
+  }
+
+  async selectAll(params) {    // 文章列表查询 - 分页 - 模糊搜索 （管理员查询all）
+    let data = {};
+    data.row = await this.app.mysql.query('select nvmjs_article.id,nvmjs_article.show,nvmjs_user.username,`title`,nvmjs_article.create_time,`length`,`describe` from nvmjs_article left join nvmjs_user on nvmjs_article.uid = nvmjs_user.uid where title like "%'+params.search+'%" order by nvmjs_article.create_time desc limit ' + (params.pageIndex - 1) * params.pageSize +','+ params.pageSize);
+    data.num = await this.app.mysql.query('select count(1) as `count` from nvmjs_article where nvmjs_article.show = 1 and title like "%'+ params.search +'%"');
     data.num = data.num[0] ? data.num[0].count : 0 ;
     return data;
   }
@@ -32,13 +40,27 @@ class ArticleService extends Service {
       length: params.length,
       type: params.type,
       create_time: params.create_time,
-      uid: params.token
+      uid: params.token,
+      show: params.show
     })
     return row;
   }
 
   async delete (id) {
     const row = await this.app.mysql.query(' delete from nvmjs_article where id = ' + id);
+    return row;
+  }
+
+  async status (params) {
+    const content = {
+      show: params.show
+    }
+    const options = {
+      where: {
+        id: params.id
+      }
+    };    
+    const row = await this.app.mysql.update('nvmjs_article', content, options);  
     return row;
   }
 
@@ -51,11 +73,11 @@ class ArticleService extends Service {
       title: params.title,
       length: params.length,
       type: params.type,
-      create_time: params.create_time
+      create_time: params.create_time,
     }
     const row = await this.app.mysql.update('nvmjs_article', content);  
     return row;
-  }
+  }  
   
 }
 
